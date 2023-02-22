@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
 import { readDeck } from "../utils/api/index";
 
-function Study() {
+function Study({ deck, setDeck }) {
     const { deckId } = useParams();
-    const [deck, setDeck] = useState({});
-    const [cards, setCards] = useState([]);
+    const cards = deck.cards;
     const [cardNumber, setCardNumber] = useState(1);
     const [front, isFront] = useState(true);
     const history = useHistory();
@@ -15,7 +14,6 @@ function Study() {
             const abortController = new AbortController();
             const response = await readDeck(deckId, abortController.signal);
             setDeck(response);
-            setCards(response.cards);
 
             return () => {
                 abortController.abort();

@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
-import { readCard, readDeck, updateCard } from "../utils/api/index";
+import { readCard, readDeck, updateCard, createCard } from "../utils/api/index";
 
-function EditCard() {
+function EditCard({ deck, setDeck }) {
     const { deckId, cardId } = useParams();
     const history = useHistory();
-    const initialDeckState = {
-        id: "",
-        name: "",
-        description: "",
-    };
+
     const initialCardState = {
         id: "",
         front: "",
@@ -17,22 +13,23 @@ function EditCard() {
         deckId: "",
     };
 
-    const [card, setCard] = useState(initialDeckState);
-    const [deck, setDeck] = useState(initialCardState);
+    const [card, setCard] = useState(initialCardState);
 
     useEffect(() => {
         async function fetchData() {
             const abortController = new AbortController();
             try {
-                const cardResponse = await readCard(
-                    cardId,
-                    abortController.signal
-                );
+                if (cardId) {
+                    const cardResponse = await readCard(
+                        cardId,
+                        abortController.signal
+                    );
+                    setCard(cardResponse);
+                }
                 const deckResponse = await readDeck(
                     deckId,
                     abortController.signal
                 );
-                setCard(cardResponse);
                 setDeck(deckResponse);
             } catch (error) {
                 console.error("Something went wrong", error);
@@ -54,8 +51,21 @@ function EditCard() {
     async function handleSubmit(event) {
         event.preventDefault();
         const abortController = new AbortController();
-        const response = await updateCard({ ...card }, abortController.signal);
-        history.push(`/decks/${deckId}`);
+        let response = "";
+        if (cardId) {
+            console.log("updating card ...");
+            response = await updateCard({ ...card }, abortController.signal);
+            history.push(`/decks/${deckId}`);
+        } else {
+            console.log("creating card ...");
+            response = await createCard(
+                deckId,
+                { ...card },
+                abortController.signal
+            );
+            history.go(0);
+            setCard(initialCardState);
+        }
         return response;
     }
 

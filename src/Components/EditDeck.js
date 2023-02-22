@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
 import { readDeck, updateDeck } from "../utils/api/index";
 
-function EditDeck() {
+function EditDeck({ deck, setDeck }) {
     const { deckId } = useParams();
     const history = useHistory();
     const initialDeckState = {
@@ -10,7 +10,6 @@ function EditDeck() {
         name: "",
         description: "",
     };
-    const [deck, setDeck] = useState(initialDeckState);
 
     useEffect(() => {
         async function fetchData() {
