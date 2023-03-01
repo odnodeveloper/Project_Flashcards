@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
-import { readCard, readDeck, updateCard, createCard } from "../utils/api/index";
+import React, { useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import { updateCard } from "../utils/api/index";
+import CardForm from "./CardForm";
 
 function EditCard({ deck, setDeck }) {
     const { deckId, cardId } = useParams();
@@ -13,40 +14,7 @@ function EditCard({ deck, setDeck }) {
         deckId: "",
     };
 
-    const [card, setCard] = useState(initialCardState);
-
-    useEffect(() => {
-        async function fetchData() {
-            const abortController = new AbortController();
-            try {
-                if (cardId) {
-                    const cardResponse = await readCard(
-                        cardId,
-                        abortController.signal
-                    );
-                    setCard(cardResponse);
-                }
-                const deckResponse = await readDeck(
-                    deckId,
-                    abortController.signal
-                );
-                setDeck(deckResponse);
-            } catch (error) {
-                console.error("Something went wrong", error);
-            }
-            return () => {
-                abortController.abort();
-            };
-        }
-        fetchData();
-    }, []);
-
-    function handleChange({ target }) {
-        setCard({
-            ...card,
-            [target.name]: target.value,
-        });
-    }
+    const [card, setCard] = useState(0);
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -56,70 +24,13 @@ function EditCard({ deck, setDeck }) {
             console.log("updating card ...");
             response = await updateCard({ ...card }, abortController.signal);
             history.push(`/decks/${deckId}`);
-        } else {
-            console.log("creating card ...");
-            response = await createCard(
-                deckId,
-                { ...card },
-                abortController.signal
-            );
             history.go(0);
             setCard(initialCardState);
         }
         return response;
     }
 
-    async function handleCancel() {
-        history.push(`/decks/${deckId}`);
-    }
-
-    return (
-        <div>
-            <ol className="breadcrumb">
-                <li className="breadcrumb-item">
-                    <Link to="/">Home</Link>
-                </li>
-                <li className="breadcrumb-item">
-                    <Link to={`/decks/${deckId}`}>{deck.name}</Link>
-                </li>
-                <li className="breadcrumb-item active">Edit Card {cardId}</li>
-            </ol>
-            <form onSubmit={handleSubmit}>
-                <h2>Edit Card</h2>
-                <div className="form-group">
-                    <label>Front</label>
-                    <textarea
-                        id="front"
-                        name="front"
-                        className="form-control"
-                        onChange={handleChange}
-                        type="text"
-                        value={card.front}
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Back</label>
-                    <textarea
-                        id="back"
-                        name="back"
-                        className="form-control"
-                        onChange={handleChange}
-                        type="text"
-                        value={card.back}
-                    />
-                </div>
-                <button
-                    className="btn btn-secondary mx-1"
-                    onClick={() => handleCancel()}
-                >
-                    Cancel
-                </button>
-                <button className="btn btn-primary mx-1" type="submit">
-                    Save
-                </button>
-            </form>
-        </div>
-    );
+    return <CardForm card={card} deck={deck} setDeck={setDeck} handleSubmit={handleSubmit} />;
 }
 
 export default EditCard;

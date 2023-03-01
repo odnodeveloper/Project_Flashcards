@@ -1,22 +1,27 @@
 import React, { useEffect } from "react";
-import { Link, useParams, useHistory } from "react-router-dom";
-import { readDeck, updateDeck } from "../utils/api/index";
+import { Link, useHistory, useParams } from "react-router-dom";
+import { readCard, readDeck } from "../utils/api/index";
 
-function EditDeck({ deck, setDeck }) {
-    const { deckId } = useParams();
+
+function CardForm({ card, setCard, deck, handleSubmit }) {
+    const { deckId, cardId } = useParams();
     const history = useHistory();
-    const initialDeckState = {
-        id: "",
-        name: "",
-        description: "",
-    };
 
     useEffect(() => {
         async function fetchData() {
             const abortController = new AbortController();
             try {
-                const response = await readDeck(deckId, abortController.signal);
-                setDeck(response);
+                if (card.id) {
+                    const cardResponse = await readCard(
+                        card.id,
+                        abortController.signal
+                    );
+                    setCard(cardResponse);
+                }
+                const deckResponse = await readDeck(
+                    deckId,
+                    abortController.signal
+                );
             } catch (error) {
                 console.error("Something went wrong", error);
             }
@@ -25,26 +30,23 @@ function EditDeck({ deck, setDeck }) {
             };
         }
         fetchData();
-    }, []);
+    }, [deckId]);
+
 
     function handleChange({ target }) {
-        setDeck({
-            ...deck,
+        console.log(target.name, target.value);
+        setCard({
+            ...card,
             [target.name]: target.value,
         });
     }
 
-    async function handleSubmit(event) {
-        event.preventDefault();
-        const abortController = new AbortController();
-        const response = await updateDeck({ ...deck }, abortController.signal);
-        history.push(`/decks/${deckId}`);
-        return response;
-    }
 
     async function handleCancel() {
         history.push(`/decks/${deckId}`);
     }
+
+    console.log(card, 123);
 
     return (
         <div>
@@ -55,30 +57,31 @@ function EditDeck({ deck, setDeck }) {
                 <li className="breadcrumb-item">
                     <Link to={`/decks/${deckId}`}>{deck.name}</Link>
                 </li>
-                <li className="breadcrumb-item active">Edit Deck</li>
+                <li className="breadcrumb-item active"></li>
+                <li className="breadcrumb-item active">{cardId ? "Edit Card" : `${deck.name}: Add Card`}</li>
             </ol>
             <form onSubmit={handleSubmit}>
-                <h1>Edit Deck</h1>
+                <h2>{cardId ? "Edit Card" : `${deck.name}: Add Card`}</h2>
                 <div className="form-group">
-                    <label>Name</label>
-                    <input
-                        id="name"
-                        name="name"
+                    <label>Front</label>
+                    <textarea
+                        id="front"
+                        name="front"
                         className="form-control"
                         onChange={handleChange}
                         type="text"
-                        value={deck.name}
+                        value={card.front}
                     />
                 </div>
                 <div className="form-group">
-                    <label>Description</label>
+                    <label>Back</label>
                     <textarea
-                        id="description"
-                        name="description"
+                        id="back"
+                        name="back"
                         className="form-control"
                         onChange={handleChange}
                         type="text"
-                        value={deck.description}
+                        value={card.back}
                     />
                 </div>
                 <button
@@ -88,11 +91,12 @@ function EditDeck({ deck, setDeck }) {
                     Cancel
                 </button>
                 <button className="btn btn-primary mx-1" type="submit">
-                    Submit
+                    Save
                 </button>
             </form>
         </div>
     );
-}
 
-export default EditDeck;
+};
+
+export default CardForm;

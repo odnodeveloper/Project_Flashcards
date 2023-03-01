@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
 import { readDeck, deleteDeck, deleteCard } from "../utils/api/index";
 
@@ -100,12 +100,12 @@ function Deck({ deck, setDeck }) {
                     >
                         Study
                     </button>
-                    <button
-                        onClick={() => handleEditCard()}
-                        className="btn btn-primary mx-1"
-                    >
-                        Add Cards
-                    </button>
+                    <Link to={`/decks/${deckId}/cards/new`}>
+                        <button
+                            className="btn btn-primary mx-1"
+                        >
+                            Add Cards
+                        </button></Link>
                     <button
                         onClick={() => handleDeleteDeck(deck)}
                         className="btn btn-danger mx-1"
@@ -125,12 +125,12 @@ function Deck({ deck, setDeck }) {
                                     <div className="col">{card.back}</div>
                                 </div>
                                 <div className="container row">
-                                    <button
-                                        onClick={() => handleEditCard(card)}
-                                        className="btn btn-secondary mx-1"
-                                    >
-                                        Edit
-                                    </button>
+                                    <Link to={`/decks/${deckId}/cards/${card.id}/edit`}>
+                                        <button
+                                            className="btn btn-secondary mx-1"
+                                        >
+                                            Edit
+                                        </button></Link>
                                     <button
                                         onClick={() =>
                                             handleDeleteCard(card)

@@ -32,7 +32,7 @@ function Home() {
             return await deleteDeck(deck.id);
         }
     }
-
+    console.log(decks);
     return (
         <div className="container">
             <Link className="btn btn-secondary mb-2" to="/decks/new">

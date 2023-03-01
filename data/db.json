@@ -74,6 +74,30 @@
       "front": "4",
       "back": "5",
       "deckId": 3
+    },
+    {
+      "id": 11,
+      "front": "abc",
+      "back": "123",
+      "deckId": 1
+    },
+    {
+      "id": 12,
+      "front": "ABC",
+      "back": "456",
+      "deckId": 4
+    },
+    {
+      "back": "card67",
+      "deckId": 1,
+      "front": "card45",
+      "id": 13
+    },
+    {
+      "back": "45",
+      "deckId": 3,
+      "front": "23",
+      "id": 14
     }
   ]
 }

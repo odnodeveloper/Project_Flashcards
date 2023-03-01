@@ -8,7 +8,9 @@ import Deck from "../Components/Deck";
 import Study from "../Components/Study";
 import EditDeck from "../Components/EditDeck";
 import EditCard from "../Components/EditCard";
-// cmd + shift + f
+import AddCard from "../Components/AddCard";
+
+
 function Layout() {
 
     const initialState = {
@@ -41,7 +43,7 @@ function Layout() {
                         <EditDeck deck={deck} setDeck={setDeck} />
                     </Route>
                     <Route path="/decks/:deckId/cards/new">
-                        <EditCard deck={deck} setDeck={setDeck} />
+                        <AddCard deck={deck} setDeck={setDeck} />
                     </Route>
                     <Route path="/decks/:deckId/cards/:cardId/edit">
                         <EditCard deck={deck} setDeck={setDeck} />
