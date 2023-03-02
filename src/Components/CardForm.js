@@ -46,7 +46,6 @@ function CardForm({ card, setCard, deck, handleSubmit }) {
         history.push(`/decks/${deckId}`);
     }
 
-    console.log(card, 123);
 
     return (
         <div>
@@ -57,7 +56,6 @@ function CardForm({ card, setCard, deck, handleSubmit }) {
                 <li className="breadcrumb-item">
                     <Link to={`/decks/${deckId}`}>{deck.name}</Link>
                 </li>
-                <li className="breadcrumb-item active"></li>
                 <li className="breadcrumb-item active">{cardId ? "Edit Card" : `${deck.name}: Add Card`}</li>
             </ol>
             <form onSubmit={handleSubmit}>
