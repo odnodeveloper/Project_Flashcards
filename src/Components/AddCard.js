@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { createCard } from "../utils/api/index";
+import { createCard, readDeck } from "../utils/api/index";
 import CardForm from "./CardForm";
 
 
-function AddCard({ deck }) {
+function AddCard({ deck, setDeck }) {
     const { deckId } = useParams();
     const history = useHistory();
 
@@ -15,12 +15,24 @@ function AddCard({ deck }) {
 
     const [card, setCard] = useState(initialCardState);
 
-    function handleChange({ target }) {
-        setCard({
-            ...card,
-            [target.name]: target.value,
-        });
-    }
+    useEffect(() => {
+        async function fetchData() {
+            const abortController = new AbortController();
+            try {
+                const deckResponse = await readDeck(
+                    deckId,
+                    abortController.signal
+                );
+                setDeck(deckResponse);
+            } catch (error) {
+                console.error("Something went wrong", error);
+            }
+            return () => {
+                abortController.abort();
+            };
+        }
+        fetchData();
+    }, [deckId, setDeck]);
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -31,10 +43,11 @@ function AddCard({ deck }) {
             { ...card },
             abortController.signal
         );
-        history.go(0);
         setCard(initialCardState);
+        handleDone();
         return response;
     }
+
 
     async function handleDone() {
         history.push(`/decks/${deckId}`);

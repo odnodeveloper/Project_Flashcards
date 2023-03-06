@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
-import { readCard, readDeck } from "../utils/api/index";
+import { readCard } from "../utils/api/index";
 
 
 function CardForm({ card, setCard, deck, handleSubmit }) {
@@ -18,10 +18,6 @@ function CardForm({ card, setCard, deck, handleSubmit }) {
                     );
                     setCard(cardResponse);
                 }
-                const deckResponse = await readDeck(
-                    deckId,
-                    abortController.signal
-                );
             } catch (error) {
                 console.error("Something went wrong", error);
             }
@@ -30,7 +26,7 @@ function CardForm({ card, setCard, deck, handleSubmit }) {
             };
         }
         fetchData();
-    }, [deckId]);
+    }, [card.id, setCard]);
 
 
     function handleChange({ target }) {
@@ -59,7 +55,13 @@ function CardForm({ card, setCard, deck, handleSubmit }) {
                 <li className="breadcrumb-item active">{cardId ? "Edit Card" : `${deck.name}: Add Card`}</li>
             </ol>
             <form onSubmit={handleSubmit}>
-                <h2>{cardId ? "Edit Card" : `${deck.name}: Add Card`}</h2>
+                <h2>{cardId ? "Edit Card" :
+                    <>
+                        <span>{deck.name}</span> :
+                        <span>Add Card</span>
+                    </>
+                }
+                </h2>
                 <div className="form-group">
                     <label>Front</label>
                     <textarea

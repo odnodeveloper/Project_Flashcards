@@ -19,6 +19,11 @@
       "name": "test2",
       "description": "test2",
       "id": 4
+    },
+    {
+      "name": "New deck",
+      "description": "ABC",
+      "id": 5
     }
   ],
   "cards": [
@@ -47,39 +52,12 @@
       "id": 5
     },
     {
-      "cards": [],
-      "front": "b",
-      "back": "b",
-      "deckId": 1,
-      "id": 7
-    },
-    {
-      "front": "1",
-      "back": "2",
-      "deckId": 3,
-      "id": 8
-    },
-    {
-      "id": 9,
-      "name": "",
-      "description": "",
-      "front": "4",
-      "back": "5",
-      "deckId": 3
-    },
-    {
       "id": 10,
       "name": "",
       "description": "",
-      "front": "4",
-      "back": "5",
+      "front": "40",
+      "back": "50",
       "deckId": 3
-    },
-    {
-      "id": 11,
-      "front": "abc",
-      "back": "123",
-      "deckId": 1
     },
     {
       "id": 12,
@@ -88,16 +66,52 @@
       "deckId": 4
     },
     {
-      "back": "card67",
-      "deckId": 1,
-      "front": "card45",
-      "id": 13
-    },
-    {
       "back": "45",
       "deckId": 3,
       "front": "23",
       "id": 14
+    },
+    {
+      "back": "This is a powerful tool for building dynamic web applications. By using Links and Routes, you can create a seamless user experience that allows users to navigate between different pages and components without having to reload the entire page. Additionally, by lifting up state to a parent component like Layout, you can easily pass data and props between different components and pages.",
+      "deckId": 2,
+      "front": "What is React Router?",
+      "id": 15
+    },
+    {
+      "back": "asdf",
+      "deckId": 4,
+      "front": "card new",
+      "id": 16
+    },
+    {
+      "back": "5678",
+      "deckId": 4,
+      "front": "12345",
+      "id": 17
+    },
+    {
+      "back": "2",
+      "deckId": 4,
+      "front": "1",
+      "id": 18
+    },
+    {
+      "back": "2",
+      "deckId": 4,
+      "front": "1",
+      "id": 19
+    },
+    {
+      "back": "ABCD",
+      "deckId": 3,
+      "front": "My card",
+      "id": 20
+    },
+    {
+      "back": "56",
+      "deckId": 3,
+      "front": "45",
+      "id": 21
     }
   ]
 }

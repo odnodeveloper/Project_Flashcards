@@ -1,20 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { updateCard } from "../utils/api/index";
+import { updateCard, readDeck, readCard } from "../utils/api/index";
 import CardForm from "./CardForm";
 
 function EditCard({ deck, setDeck }) {
     const { deckId, cardId } = useParams();
     const history = useHistory();
-
-    const initialCardState = {
-        id: "",
-        front: "",
-        back: "",
-        deckId: "",
-    };
-
     const [card, setCard] = useState(0);
+
+    useEffect(() => {
+        async function fetchData() {
+            const abortController = new AbortController();
+            try {
+                if (cardId) {
+                    const cardResponse = await readCard(
+                        cardId,
+                        abortController.signal
+                    );
+                    setCard(cardResponse);
+                }
+                const deckResponse = await readDeck(
+                    deckId,
+                    abortController.signal
+                );
+                setDeck(deckResponse);
+            } catch (error) {
+                console.error("Something went wrong", error);
+            }
+            return () => {
+                abortController.abort();
+            };
+        }
+        fetchData();
+    }, [cardId, deckId, setDeck]);
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -25,12 +43,15 @@ function EditCard({ deck, setDeck }) {
             response = await updateCard({ ...card }, abortController.signal);
             history.push(`/decks/${deckId}`);
             history.go(0);
-            setCard(initialCardState);
         }
         return response;
     }
 
-    return <CardForm card={card} deck={deck} setDeck={setDeck} handleSubmit={handleSubmit} />;
+    console.log(deck);
+    console.log(deck.cards);
+    console.log(typeof cardId);
+
+    return <CardForm card={card} setCard={setCard} deck={deck} setDeck={setDeck} handleSubmit={handleSubmit} />;
 }
 
 export default EditCard;
