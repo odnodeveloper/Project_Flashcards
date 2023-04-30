@@ -5,13 +5,13 @@ This flashcard application allows users to create, edit, and delete decks and ca
 
 Technologies Used
 
-JavaScript
-React
-Express
-Knex
-HTML
-CSS
-Progress/Versions tracked with Git
+-JavaScript
+-React
+-Express
+-Knex
+-HTML
+-CSS
+-Progress/Versions tracked with Git
 
 
 Description
