@@ -5,13 +5,13 @@ This flashcard application allows users to create, edit, and delete decks and ca
 
 Technologies Used
 
--JavaScript
--React
--Express
--Knex
--HTML
--CSS
--Progress/Versions tracked with Git
+JavaScript,
+React,
+Express,
+Knex,
+HTML,
+CSS,
+Progress/Versions tracked with Git
 
 
 Description
@@ -33,6 +33,6 @@ View Cards page
 
 Setup/Installation Requirement
 
-Clone this repository to your local machine
-Open the project in the VSCode
-Run npm start and open it in your browser
+- Clone this repository to your local machine
+- Open the project in the VSCode
+- Run npm start and open it in your browser
